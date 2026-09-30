@@ -1,0 +1,43 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connect your Kindle reading history",
+        "description": "Kindle has no public API, so this integration reads the Goodreads account your Kindle syncs to. Enable it on your Kindle under Settings → Your Account → Social Networks → Goodreads, and make sure your Goodreads shelves are public.",
+        "data": {
+          "user_id": "Goodreads user ID or profile URL",
+          "read_shelf": "Shelf with finished books",
+          "reading_shelf": "Shelf with the book you are reading"
+        }
+      }
+    },
+    "error": {
+      "invalid_user_id": "Enter a numeric Goodreads user ID or a URL like https://www.goodreads.com/user/show/12345-name",
+      "user_not_found": "Goodreads user not found, or the profile is private",
+      "cannot_connect": "Could not fetch the Goodreads feed"
+    },
+    "abort": {
+      "already_configured": "This Goodreads account is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "data": {
+          "read_shelf": "Shelf with finished books",
+          "reading_shelf": "Shelf with the book you are reading",
+          "scan_interval": "Update interval (minutes)",
+          "max_books": "Books listed in sensor attributes"
+        }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "currently_reading": { "name": "Currently reading" },
+      "last_finished": { "name": "Last finished" },
+      "books_read": { "name": "Books read" },
+      "books_read_this_year": { "name": "Books read this year" }
+    }
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "domain": "kindle_books",
+  "name": "Kindle Books",
+  "codeowners": ["@magicmatt007"],
+  "config_flow": true,
+  "documentation": "https://github.com/magicmatt007/ha-kindle-books",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/magicmatt007/ha-kindle-books/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

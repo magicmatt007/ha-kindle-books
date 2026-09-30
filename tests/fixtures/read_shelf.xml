@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Matt's bookshelf: read</title>
+  <item>
+    <guid><![CDATA[https://www.goodreads.com/review/show/111?utm_medium=api&utm_source=rss]]></guid>
+    <pubDate><![CDATA[Sun, 14 Sep 2026 08:12:00 -0700]]></pubDate>
+    <title>Project Hail Mary</title>
+    <link><![CDATA[https://www.goodreads.com/review/show/111?utm_medium=api&utm_source=rss]]></link>
+    <book_id>54493401</book_id>
+    <book_image_url><![CDATA[https://i.gr-assets.com/phm._SY75_.jpg]]></book_image_url>
+    <book_large_image_url><![CDATA[https://i.gr-assets.com/phm._SY475_.jpg]]></book_large_image_url>
+    <book_description><![CDATA[A lone astronaut...]]></book_description>
+    <book id="54493401"><num_pages>476</num_pages></book>
+    <author_name>Andy Weir</author_name>
+    <isbn>0593135202</isbn>
+    <user_rating>5</user_rating>
+    <user_read_at><![CDATA[Sat, 13 Sep 2026 00:00:00 +0000]]></user_read_at>
+    <user_date_added><![CDATA[Mon, 01 Sep 2026 10:00:00 -0700]]></user_date_added>
+    <average_rating>4.52</average_rating>
+    <book_published>2021</book_published>
+  </item>
+  <item>
+    <guid>https://www.goodreads.com/review/show/222</guid>
+    <title>Dune</title>
+    <book_id>44767458</book_id>
+    <book_image_url>https://i.gr-assets.com/dune.jpg</book_image_url>
+    <book_large_image_url></book_large_image_url>
+    <book id="44767458"><num_pages></num_pages></book>
+    <author_name>Frank Herbert</author_name>
+    <isbn></isbn>
+    <user_rating>0</user_rating>
+    <user_read_at></user_read_at>
+    <user_date_added>Tue, 05 Jan 2021 10:00:00 -0800</user_date_added>
+    <average_rating>4.27</average_rating>
+  </item>
+</channel>
+</rss>
