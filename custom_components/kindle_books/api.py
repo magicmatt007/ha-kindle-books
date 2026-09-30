@@ -22,7 +22,7 @@ MAX_PAGES = 20
 USER_ID_RE = re.compile(
     r"(?:goodreads\.com/(?:user/show|review/list|review/list_rss)/)?(\d+)"
 )
-KEY_RE = re.compile(r"[?&]key=([A-Za-z0-9_-]+)")
+KEY_RE = re.compile(r"[?&;]key=([A-Za-z0-9_-]+)")  # ";" covers "&amp;" from page source
 
 
 class GoodreadsError(Exception):

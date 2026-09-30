@@ -64,6 +64,8 @@ def test_parse_rss_link():
     assert api.parse_user_id(link) == "12345"
     assert api.parse_feed_key(link) == "AbC-123_x"
     assert api.parse_feed_key("https://www.goodreads.com/user/show/12345-matt") is None
+    # Copied from the HTML page source, where "&" is escaped.
+    assert api.parse_feed_key(f"{link.split('?')[0]}?shelf=read&amp;key=AbC") == "AbC"
 
 
 def test_parse_user_id_invalid():
