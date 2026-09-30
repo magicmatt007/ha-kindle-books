@@ -3,17 +3,17 @@
     "step": {
       "user": {
         "title": "Connect your Kindle reading history",
-        "description": "Kindle has no public API, so this integration reads the Goodreads account your Kindle syncs to. Enable it on your Kindle under Settings → Your Account → Social Networks → Goodreads, and make sure your Goodreads shelves are public.",
+        "description": "Kindle has no public API, so this integration reads the Goodreads account your Kindle syncs to. Enable it on your Kindle under Settings → Your Account → Social Networks → Goodreads, Then paste your private RSS link from Goodreads (My Books → RSS link at the bottom of the page) so your shelves can stay private. A public profile URL or user ID also works.",
         "data": {
-          "user_id": "Goodreads user ID or profile URL",
+          "user_id": "Goodreads RSS link, profile URL or user ID",
           "read_shelf": "Shelf with finished books",
           "reading_shelf": "Shelf with the book you are reading"
         }
       }
     },
     "error": {
-      "invalid_user_id": "Enter a numeric Goodreads user ID or a URL like https://www.goodreads.com/user/show/12345-name",
-      "user_not_found": "Goodreads user not found, or the profile is private",
+      "invalid_user_id": "Paste your Goodreads RSS link, a profile URL like https://www.goodreads.com/user/show/12345-name, or a numeric user ID",
+      "user_not_found": "Goodreads refused the request. If your profile is private, paste the RSS link from My Books, which includes your private key.",
       "cannot_connect": "Could not fetch the Goodreads feed"
     },
     "abort": {

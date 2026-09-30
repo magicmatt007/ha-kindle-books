@@ -15,8 +15,15 @@ from homeassistant.config_entries import (
 from homeassistant.core import callback
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
-from .api import GoodreadsClient, GoodreadsError, GoodreadsUserNotFound, parse_user_id
+from .api import (
+    GoodreadsClient,
+    GoodreadsError,
+    GoodreadsUserNotFound,
+    parse_feed_key,
+    parse_user_id,
+)
 from .const import (
+    CONF_FEED_KEY,
     CONF_MAX_BOOKS,
     CONF_READ_SHELF,
     CONF_READING_SHELF,
@@ -47,7 +54,10 @@ class KindleBooksConfigFlow(ConfigFlow, domain=DOMAIN):
             else:
                 await self.async_set_unique_id(user_id)
                 self._abort_if_unique_id_configured()
-                client = GoodreadsClient(async_get_clientsession(self.hass), user_id)
+                key = parse_feed_key(user_input[CONF_USER_ID])
+                client = GoodreadsClient(
+                    async_get_clientsession(self.hass), user_id, key
+                )
                 try:
                     await client.get_shelf(user_input[CONF_READ_SHELF], max_pages=1)
                 except GoodreadsUserNotFound:
@@ -57,7 +67,11 @@ class KindleBooksConfigFlow(ConfigFlow, domain=DOMAIN):
                 else:
                     return self.async_create_entry(
                         title=f"Kindle books ({user_id})",
-                        data={**user_input, CONF_USER_ID: user_id},
+                        data={
+                            **user_input,
+                            CONF_USER_ID: user_id,
+                            CONF_FEED_KEY: key,
+                        },
                     )
 
         schema = vol.Schema(

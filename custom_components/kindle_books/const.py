@@ -5,6 +5,7 @@ from datetime import timedelta
 DOMAIN = "kindle_books"
 
 CONF_USER_ID = "user_id"
+CONF_FEED_KEY = "feed_key"
 CONF_READ_SHELF = "read_shelf"
 CONF_READING_SHELF = "reading_shelf"
 CONF_SCAN_INTERVAL = "scan_interval"

@@ -19,7 +19,10 @@ import aiohttp
 
 FEED_URL = "https://www.goodreads.com/review/list_rss/{user_id}"
 MAX_PAGES = 20
-USER_ID_RE = re.compile(r"(?:goodreads\.com/(?:user/show|review/list)/)?(\d+)")
+USER_ID_RE = re.compile(
+    r"(?:goodreads\.com/(?:user/show|review/list|review/list_rss)/)?(\d+)"
+)
+KEY_RE = re.compile(r"[?&]key=([A-Za-z0-9_-]+)")
 
 
 class GoodreadsError(Exception):
@@ -27,7 +30,7 @@ class GoodreadsError(Exception):
 
 
 class GoodreadsUserNotFound(GoodreadsError):
-    """The user does not exist or the profile is private."""
+    """The user does not exist, or the profile is private and no key was given."""
 
 
 @dataclass
@@ -62,6 +65,16 @@ def parse_user_id(value: str) -> str:
     if not match:
         raise ValueError(f"Could not find a Goodreads user id in {value!r}")
     return match.group(1)
+
+
+def parse_feed_key(value: str) -> str | None:
+    """Return the private feed key from a Goodreads RSS link, if present.
+
+    Goodreads adds a secret ``key`` to the RSS links on your own "My Books"
+    page. With it the feed can be read even when the profile is private.
+    """
+    match = KEY_RE.search(value.strip())
+    return match.group(1) if match else None
 
 
 def _text(item: ET.Element, tag: str) -> str | None:
@@ -131,23 +144,31 @@ def parse_feed(xml_text: str) -> list[Book]:
 class GoodreadsClient:
     """Fetch shelves for one Goodreads user."""
 
-    def __init__(self, session: aiohttp.ClientSession, user_id: str) -> None:
+    def __init__(
+        self, session: aiohttp.ClientSession, user_id: str, key: str | None = None
+    ) -> None:
         self._session = session
         self.user_id = user_id
+        self._key = key
 
     async def _fetch_page(self, shelf: str, page: int) -> str:
         url = FEED_URL.format(user_id=self.user_id)
         params = {"shelf": shelf, "page": str(page)}
+        if self._key:
+            params["key"] = self._key
         try:
             async with self._session.get(
                 url, params=params, timeout=aiohttp.ClientTimeout(total=30)
             ) as resp:
-                if resp.status == 404:
+                if resp.status in (401, 403, 404):
                     raise GoodreadsUserNotFound(self.user_id)
                 resp.raise_for_status()
                 return await resp.text()
         except aiohttp.ClientError as err:
-            raise GoodreadsError(f"Error fetching {url}: {err}") from err
+            # Don't include the URL: it can carry the private feed key.
+            status = getattr(err, "status", None)
+            detail = f"HTTP {status}" if status else type(err).__name__
+            raise GoodreadsError(f"Error fetching shelf {shelf!r}: {detail}") from None
 
     async def get_shelf(self, shelf: str, max_pages: int = MAX_PAGES) -> list[Book]:
         """Return every book on a shelf, following pagination."""

@@ -8,7 +8,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import GoodreadsClient
-from .const import CONF_USER_ID
+from .const import CONF_FEED_KEY, CONF_USER_ID
 from .coordinator import KindleBooksCoordinator
 
 PLATFORMS = [Platform.SENSOR]
@@ -18,7 +18,11 @@ type KindleBooksConfigEntry = ConfigEntry[KindleBooksCoordinator]
 
 async def async_setup_entry(hass: HomeAssistant, entry: KindleBooksConfigEntry) -> bool:
     """Set up Kindle Books from a config entry."""
-    client = GoodreadsClient(async_get_clientsession(hass), entry.data[CONF_USER_ID])
+    client = GoodreadsClient(
+        async_get_clientsession(hass),
+        entry.data[CONF_USER_ID],
+        entry.data.get(CONF_FEED_KEY),
+    )
     coordinator = KindleBooksCoordinator(hass, entry, client)
     await coordinator.async_config_entry_first_refresh()
     entry.runtime_data = coordinator

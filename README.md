@@ -20,13 +20,19 @@ On your Kindle, go to **Settings → Your Account → Social Networks → Goodre
 
 When you open a new book, Kindle offers to mark it as *Currently reading*. When you reach the end, it offers to mark it as *Read* and ask for a rating. Accept these prompts and your shelves stay up to date. You can also fix shelves by hand on goodreads.com.
 
-### 2. Make your shelves visible
+### 2. Copy your private RSS link
 
-On Goodreads, go to **Account settings → Privacy** and set *Who can view my profile* to **anyone** (including non-Goodreads members). Private profiles don't publish the RSS feed.
+Your Goodreads shelves can stay private. On goodreads.com, open **My Books**, scroll to the bottom of the page and copy the **RSS** link. It looks like this:
 
-### 3. Find your Goodreads user ID
+```
+https://www.goodreads.com/review/list_rss/12345678?key=AbCdEf...&shelf=%23ALL%23
+```
 
-Open your Goodreads profile. The URL looks like `https://www.goodreads.com/user/show/12345678-matt`, and the number is your ID. When you set up the integration, you can paste either the number or the whole URL.
+The `key` part is a secret that lets the integration read your shelves. Treat the link like a password. The integration stores it in Home Assistant and never logs it.
+
+### 3. Public profiles: the profile URL also works
+
+If your profile is public, you can use your profile URL (`https://www.goodreads.com/user/show/12345678-name`) or your user ID instead of the RSS link.
 
 ### 4. Install the integration
 

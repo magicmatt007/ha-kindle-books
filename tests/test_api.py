@@ -59,6 +59,13 @@ def test_parse_user_id(value, expected):
     assert api.parse_user_id(value) == expected
 
 
+def test_parse_rss_link():
+    link = "https://www.goodreads.com/review/list_rss/12345?key=AbC-123_x&shelf=%23ALL%23"
+    assert api.parse_user_id(link) == "12345"
+    assert api.parse_feed_key(link) == "AbC-123_x"
+    assert api.parse_feed_key("https://www.goodreads.com/user/show/12345-matt") is None
+
+
 def test_parse_user_id_invalid():
     with pytest.raises(ValueError):
         api.parse_user_id("matt")
@@ -104,6 +111,12 @@ async def test_get_shelf_stops_on_repeated_page():
     books = await api.GoodreadsClient(session, "1").get_shelf("read")
     assert len(books) == 2
     assert len(session.calls) == 2
+
+
+async def test_get_shelf_sends_key():
+    session = _FakeSession([FIXTURE])
+    await api.GoodreadsClient(session, "1", "secret").get_shelf("read")
+    assert all(c["key"] == "secret" for c in session.calls)
 
 
 async def test_get_shelf_not_found():

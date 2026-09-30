@@ -49,6 +49,28 @@ async def test_config_flow(hass: HomeAssistant, aioclient_mock: AiohttpClientMoc
     assert result["data"]["user_id"] == "12345"
 
 
+async def test_config_flow_private_rss_link(
+    hass: HomeAssistant, aioclient_mock: AiohttpClientMocker
+) -> None:
+    aioclient_mock.get(
+        FEED, params={"shelf": "read", "page": "1", "key": "s3cret"}, text=EMPTY
+    )
+    result = await hass.config_entries.flow.async_init(
+        DOMAIN, context={"source": config_entries.SOURCE_USER}
+    )
+    result = await hass.config_entries.flow.async_configure(
+        result["flow_id"],
+        {
+            "user_id": f"{FEED}?key=s3cret&shelf=%23ALL%23",
+            "read_shelf": "read",
+            "reading_shelf": "currently-reading",
+        },
+    )
+    assert result["type"] is FlowResultType.CREATE_ENTRY
+    assert result["data"]["user_id"] == "12345"
+    assert result["data"]["feed_key"] == "s3cret"
+
+
 async def test_config_flow_errors(hass: HomeAssistant, aioclient_mock: AiohttpClientMocker) -> None:
     aioclient_mock.get(FEED, params={"shelf": "read", "page": "1"}, status=404)
     result = await hass.config_entries.flow.async_init(
